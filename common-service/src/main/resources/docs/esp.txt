@@ -1,0 +1,96 @@
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
+
+// 🔁 Thay bằng WiFi thật của bạn
+const char* ssid = "Vo Nhat Truong";
+const char* password = "sang0932667080";
+
+// 🔁 Thay IP và port đúng với Spring Boot backend của bạn
+const char* serverUrl = "http://192.168.1.118:9997/api/v1/sensors";
+
+const float U0 = 2000.0;
+float Um;
+float f;
+int NTU;
+long ssvs = 0;
+
+#define relay 12  // Chân D6
+
+void setup() {
+  Serial.begin(9600);
+  pinMode(relay, OUTPUT);
+  digitalWrite(relay, LOW);  // Mặc định tắt relay
+
+  // Kết nối WiFi
+  WiFi.begin(ssid, password);
+  Serial.print("🔌 Đang kết nối WiFi");
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("\n✅ Đã kết nối WiFi");
+}
+
+void loop() {
+  // Lấy mẫu cảm biến
+  for (int i = 0; i < 100; i++) {
+    int sensorValue = analogRead(A0);
+    ssvs += sensorValue;
+  }
+
+  int ssvt = ssvs / 100;
+  ssvs = 0;
+
+  Um = (ssvt / 1023.0) * 3300;
+  f = Um / U0;
+
+  if (f >= 0.98) {
+    NTU = 0;
+  } else {
+    NTU = map(f * 100, 0, 100, 1000, 0);
+  }
+
+  // Điều khiển relay
+  bool isClear = NTU < 60;
+  digitalWrite(relay, isClear ? HIGH : LOW);
+
+  // In ra Serial
+  Serial.print("Um (mV): ");
+  Serial.print(Um);
+  Serial.print("\t f: ");
+  Serial.print(f, 4);
+  Serial.print("\t NTU: ");
+  Serial.print(NTU);
+  Serial.print("\t ");
+  Serial.print(isClear ? "Nước trong" : "Nước đục");
+  Serial.print("\t Relay ");
+  Serial.println(isClear ? "MỞ" : "ĐÓNG");
+
+  // Gửi dữ liệu lên server
+  if (WiFi.status() == WL_CONNECTED) {
+    WiFiClient client;
+    HTTPClient http;
+    http.begin(client, serverUrl);  // ✅ Dùng phiên bản đúng: http.begin(client, url)
+    http.addHeader("Content-Type", "application/json");
+
+    long timestamp = millis();  // Sử dụng thời gian từ millis()
+    String jsonPayload = "{";
+    jsonPayload += "\"turbidity\":" + String(NTU) + ",";
+    jsonPayload += "\"timestamp\":" + String(timestamp);
+    jsonPayload += "}";
+
+    int httpCode = http.POST(jsonPayload);
+    if (httpCode > 0) {
+      Serial.println("📡 Gửi dữ liệu thành công");
+    } else {
+      Serial.print("❌ Lỗi gửi dữ liệu. Mã lỗi: ");
+      Serial.println(httpCode);
+    }
+
+    http.end();
+  } else {
+    Serial.println("⚠️ WiFi mất kết nối, không thể gửi dữ liệu.");
+  }
+
+  delay(5000);  // Lặp mỗi 5 giây
+}
