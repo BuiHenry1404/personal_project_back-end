@@ -1,11 +1,11 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
-// 🔁 Thay bằng WiFi thật của bạn
+//Thay bằng WiFi thật của bạn
 const char* ssid = "Vo Nhat Truong";
 const char* password = "sang0932667080";
 
-// 🔁 Thay IP và port đúng với Spring Boot backend của bạn
+//Thay IP và port đúng với Spring Boot backend
 const char* serverUrl = "http://192.168.1.118:9997/api/v1/sensors";
 
 const float U0 = 2000.0;
@@ -51,7 +51,7 @@ void loop() {
   }
 
   // Điều khiển relay
-  bool isClear = NTU < 60;
+  bool isClear = NTU < 150;
   digitalWrite(relay, isClear ? HIGH : LOW);
 
   // In ra Serial
