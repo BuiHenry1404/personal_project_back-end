@@ -20,7 +20,6 @@ services:
           property: password
     plan: free
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-main
@@ -43,7 +42,6 @@ services:
           property: password
     plan: free
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-file
@@ -54,7 +52,6 @@ services:
         value: production
     plan: free
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-notify
@@ -65,7 +62,6 @@ services:
         value: production
     plan: free
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-payment
@@ -76,7 +72,6 @@ services:
         value: production
     plan: free
     buildCommand: mvn clean package -DskipTests
-    startCommand: java -jar target/*.jar
 
 databases:
   - name: room-management-db
