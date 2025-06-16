@@ -3,7 +3,10 @@ services:
     name: room-management-auth
     env: docker
     dockerfilePath: auth-service/Dockerfile
-    buildCommand: mvn clean package -DskipTests
+    buildCommand: |
+      cd auth-service
+      mvn clean package -DskipTests
+      cd ..
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -25,7 +28,10 @@ services:
     name: room-management-main
     env: docker
     dockerfilePath: main-service/Dockerfile
-    buildCommand: mvn clean package -DskipTests
+    buildCommand: |
+      cd main-service
+      mvn clean package -DskipTests
+      cd ..
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -47,7 +53,10 @@ services:
     name: room-management-file
     env: docker
     dockerfilePath: file-service/Dockerfile
-    buildCommand: mvn clean package -DskipTests
+    buildCommand: |
+      cd file-service
+      mvn clean package -DskipTests
+      cd ..
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -57,7 +66,10 @@ services:
     name: room-management-notify
     env: docker
     dockerfilePath: notify-service/Dockerfile
-    buildCommand: mvn clean package -DskipTests
+    buildCommand: |
+      cd notify-service
+      mvn clean package -DskipTests
+      cd ..
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -67,7 +79,10 @@ services:
     name: room-management-payment
     env: docker
     dockerfilePath: payment-service/Dockerfile
-    buildCommand: mvn clean package -DskipTests
+    buildCommand: |
+      cd payment-service
+      mvn clean package -DskipTests
+      cd ..
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
