@@ -2,8 +2,7 @@ services:
   - type: web
     name: room-management-auth
     env: java
-    build:
-      dockerfile: ./auth-service/Dockerfile
+    dockerfilePath: ./auth-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -24,8 +23,7 @@ services:
   - type: web
     name: room-management-main
     env: java
-    build:
-      dockerfile: ./main-service/Dockerfile
+    dockerfilePath: ./main-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -46,8 +44,7 @@ services:
   - type: web
     name: room-management-file
     env: java
-    build:
-      dockerfile: ./file-service/Dockerfile
+    dockerfilePath: ./file-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -56,8 +53,7 @@ services:
   - type: web
     name: room-management-notify
     env: java
-    build:
-      dockerfile: ./notify-service/Dockerfile
+    dockerfilePath: ./notify-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
@@ -66,8 +62,7 @@ services:
   - type: web
     name: room-management-payment
     env: java
-    build:
-      dockerfile: ./payment-service/Dockerfile
+    dockerfilePath: ./payment-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
