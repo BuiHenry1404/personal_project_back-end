@@ -1,7 +1,7 @@
 services:
   - type: web
     name: room-management-auth
-    env: java
+    env: docker
     dockerfilePath: ./auth-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -13,16 +13,18 @@ services:
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: room-management-db
-          property: username
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: room-management-db
           property: password
     plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-main
-    env: java
+    env: docker
     dockerfilePath: ./main-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -34,44 +36,50 @@ services:
       - key: SPRING_DATASOURCE_USERNAME
         fromDatabase:
           name: room-management-db
-          property: username
+          property: user
       - key: SPRING_DATASOURCE_PASSWORD
         fromDatabase:
           name: room-management-db
           property: password
     plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-file
-    env: java
+    env: docker
     dockerfilePath: ./file-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
     plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-notify
-    env: java
+    env: docker
     dockerfilePath: ./notify-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
     plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
 
   - type: web
     name: room-management-payment
-    env: java
+    env: docker
     dockerfilePath: ./payment-service/Dockerfile
     envVars:
       - key: SPRING_PROFILES_ACTIVE
         value: production
     plan: free
+    buildCommand: mvn clean package -DskipTests
+    startCommand: java -jar target/*.jar
 
 databases:
   - name: room-management-db
     databaseName: room_management
     user: admin
     plan: free
-    # Bỏ thuộc tính version vì không được hỗ trợ trong plan free
-
