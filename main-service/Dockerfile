@@ -1,10 +1,10 @@
 # Build stage
 FROM maven:3.8.6-jdk-11-slim AS build
 WORKDIR /app
-# Copy just the pom.xml first to leverage Docker cache
+# Copy the pom.xml file
 COPY pom.xml .
-# Copy the rest of the source code
-COPY . .
+# Copy the source code
+COPY src /app/src
 # Build the application
 RUN mvn clean package -DskipTests
 
