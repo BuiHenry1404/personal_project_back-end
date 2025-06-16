@@ -2,7 +2,7 @@ services:
   - type: web
     name: room-management-auth
     env: docker
-    dockerfilePath: Dockerfile
+    dockerfilePath: auth-service/Dockerfile
     buildCommand: mvn clean package -DskipTests
     envVars:
       - key: SPRING_PROFILES_ACTIVE
@@ -20,7 +20,6 @@ services:
           name: room-management-db
           property: password
     plan: free
-    buildCommand: mvn clean package -DskipTests
 
   - type: web
     name: room-management-main
@@ -43,7 +42,6 @@ services:
           name: room-management-db
           property: password
     plan: free
-    buildCommand: mvn clean package -DskipTests
 
   - type: web
     name: room-management-file
@@ -54,7 +52,6 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: production
     plan: free
-    buildCommand: mvn clean package -DskipTests
 
   - type: web
     name: room-management-notify
@@ -65,7 +62,6 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: production
     plan: free
-    buildCommand: mvn clean package -DskipTests
 
   - type: web
     name: room-management-payment
@@ -76,7 +72,6 @@ services:
       - key: SPRING_PROFILES_ACTIVE
         value: production
     plan: free
-    buildCommand: mvn clean package -DskipTests
 
 databases:
   - name: room-management-db
