@@ -74,4 +74,4 @@ databases:
     user: admin
     plan: free
     # Bỏ thuộc tính version vì không được hỗ trợ trong plan free
-    version: "8.0"
+
